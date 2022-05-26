@@ -3,6 +3,7 @@
 
 import sys
 import numpy as np
+import math
 
 GRID_SIZE = 400
 TIME = 1440
@@ -17,7 +18,17 @@ class Attraction:
         self.duration = duration
     
 
-def greedy():
+def cost(start, end):
+    dist = math.sqrt((start.x - end.x)**2 + (start.y - end.y)**2)
+    time = end.duration
+    util = end.util
+    return dist * time / util
+
+
+def greedy(N, attractions):
+    curr_x = 200
+    curr_y = 200
+    
     return
 
 

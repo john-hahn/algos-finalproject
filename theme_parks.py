@@ -4,13 +4,7 @@
 from importlib.resources import path
 import math
 import os
-import sys
 from tracemalloc import start
-import numpy as np
-
-GRID_SIZE = 400
-TIME = 1440
-
 
 # receive input
 #   create array of attractions
@@ -34,6 +28,10 @@ TIME = 1440
 #       if cost < min: min = cost
 #   return min_attraction
 
+GRID_SIZE = 400
+TIME = 1440
+
+
 class Attraction:
     def __init__(self, id, x, y, open, close, util, duration):
         self.id = id
@@ -48,7 +46,7 @@ class Attraction:
         return "Attraction %s: x: %s, y: %s, open: %s, close: %s, util: %s, duration: %s" % (self.id, self.x, self.y, self.open, self.close, self.util, self.duration)
 
     def travel_time(self, end):
-        return math.sqrt((self.x - end.x)**2 + (self.y - end.y)**2)
+        return math.ceil(math.sqrt((self.x - end.x)**2 + (self.y - end.y)**2))
 
     def is_closed(self, end, curr_time, start_to_end):
         time_reach = curr_time + start_to_end
@@ -57,7 +55,7 @@ class Attraction:
     def can_reach_home(self, end, curr_time, start_to_end):
         tot_time = curr_time + \
             start_to_end + end.duration + \
-            math.sqrt((end.x - 200)**2 + (end.y - 200)**2)
+            math.ceil(math.sqrt((end.x - 200)**2 + (end.y - 200)**2))
         return tot_time <= TIME
 
     def is_viable(self, end, curr_time):
@@ -72,7 +70,7 @@ class Attraction:
         util = end.util
         if util == 0:
             return math.inf
-        return (dist**2) * (time**1.4) / (util**3)
+        return (dist**2) * (time**1.4) / (util**4)
 
 
 def greedy(attractions):

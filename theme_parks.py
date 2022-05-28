@@ -70,7 +70,7 @@ class Attraction:
         util = end.util
         if util == 0:
             return math.inf
-        return (dist**2) * (time**1.4) / (util**4)
+        return (((dist + time)**2) / (util) + (dist + time) / (util)) / 2
 
 
 def greedy(attractions):
